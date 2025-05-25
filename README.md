@@ -1,1 +1,52 @@
-# hex_vals
+# Debugging with hex values
+
+## Overview
+
+**Debugging with hex values** is a cross-platform C++ demo that intentionally triggers a segmentation fault and analyzes the resulting crash using platform-specific mechanisms. It identifies the faulting address pattern (such as `0xDEADBEEF`, NULL, or low address values) and prints a simple backtrace on Unix-like systems. This tool helps developers understand and debug invalid pointer dereference issues effectively.
+
+## Build & Run
+
+To build and run the project, follow these steps:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/AniDashyan/debug_with_hex_vals.git
+cd debug_with_hex_vals
+
+# 2. Generate build files and compile
+cmake -S . -B build
+cmake --build build
+
+# 3. Run the executable
+./build/hex_vals
+```
+
+## Example Output
+
+```
+=== Segfault Hex Debugging Demo ===
+Dereferencing 0xDEADBEEF...
+
+=== HEX ANALYSIS ===
+Fault Address: 0xDEADBEEF
+Pattern: DEADBEEF (debug marker)
+
+Stack trace (5 frames):
+[0] 0x0x5aca9fa363cc
+[1] 0x0x72ff5fe78320
+[2] 0x0x5aca9fa365a6
+[3] 0x0x72ff5fe5d1ca
+[4] 0x0x72ff5fe5d28b
+
+Analysis complete. Exiting...
+```
+
+## Explanation
+
+The program works as follows:
+
+* It registers a crash handler using platform-specific APIs (`sigaction` on Linux/macOS or `SetUnhandledExceptionFilter` on Windows).
+* It deliberately dereferences an invalid pointer (`0xDEADBEEF`) to cause a segmentation fault or access violation.
+* When the crash occurs:
+  * The handler captures the faulting address and passes it to `analyze_hex_address()`.
+  * The analysis function classifies the address (e.g., NULL, known debug pattern, low address range) and prints details.
