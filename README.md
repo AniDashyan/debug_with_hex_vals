@@ -1,7 +1,3 @@
-Got it. Here's the updated `README.md` content with the correct project title:
-
----
-
 # Debugging with hex values
 
 ## Overview
